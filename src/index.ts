@@ -12,9 +12,10 @@ app.get('/', (_, res) => {
 
 app.listen(ENV.PORT, () => {
   logger.verbose(
-    `ENV is pointing to ${ENV.NODE_ENV !== 'production'
-      ? JSON.stringify(ENV, undefined, 2)
-      : ENV.NODE_ENV
+    `ENV is pointing to ${
+      ENV.NODE_ENV !== 'production'
+        ? JSON.stringify(ENV, undefined, 2)
+        : ENV.NODE_ENV
     }`,
   );
 
