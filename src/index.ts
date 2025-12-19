@@ -1,14 +1,25 @@
 import express from 'express';
 import logger from './logger';
 import { ENV } from './env';
+import errorHandler from './middlewares/error-handler';
+import gateway from './routes/gateway';
+import { listRoutes } from './utils/list-routes';
+import { NotFoundError } from './utils/errors';
 
 logger.info('Application is starting...');
 
 const app = express();
 
-app.get('/', (_, res) => {
-  res.send('Hello TypeScript + Express');
+logger.info('Setting up middlewares...');
+app.use(express.json());
+
+app.use(gateway);
+
+app.use((_req, _res, next) => {
+  return next(new NotFoundError('Route not found'));
 });
+
+app.use(errorHandler);
 
 app.listen(ENV.PORT, () => {
   logger.verbose(
@@ -18,6 +29,10 @@ app.listen(ENV.PORT, () => {
         : ENV.NODE_ENV
     }`,
   );
+
+  listRoutes(app).forEach((route) => {
+    logger.verbose(`${route.method} ${route.path}`);
+  });
 
   logger.info(`Server is running on http://localhost:${ENV.PORT}`);
 });
