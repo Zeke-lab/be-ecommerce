@@ -5,6 +5,7 @@ import errorHandler from './middlewares/error-handler';
 import gateway from './routes/gateway';
 import { listRoutes } from './utils/list-routes';
 import { NotFoundError } from './utils/errors';
+import cookieParser from 'cookie-parser';
 
 logger.info('Application is starting...');
 
@@ -12,6 +13,7 @@ const app = express();
 
 logger.info('Setting up middlewares...');
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(gateway);
 

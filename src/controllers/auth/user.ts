@@ -10,6 +10,12 @@ const registerUserSchema = z.object({
   password: z.string().min(6),
 });
 
+const loginUserSchema = z.object({
+  email: z.email(),
+  password: z.string().min(6),
+  rememberMe: z.boolean().optional().default(true),
+});
+
 const registerUser = async (
   req: Request,
   res: Response,
@@ -34,4 +40,39 @@ const registerUser = async (
   }
 };
 
-export { registerUser };
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, password, rememberMe } = loginUserSchema.parse(req.body);
+
+    const { refreshToken, accessToken, userInfo } = await userService.login(
+      email,
+      password,
+      rememberMe,
+    );
+
+    // use HTTP only Cookie because we don't want JS to access it
+    if (refreshToken) {
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      });
+    }
+
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
+
+    return res.status(200).json({ userInfo });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return next(new ValidationError(error.issues));
+    } else {
+      return next(error);
+    }
+  }
+};
+
+export { registerUser, loginUser };
