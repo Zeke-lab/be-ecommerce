@@ -6,6 +6,7 @@ import gateway from './routes/gateway';
 import { listRoutes } from './utils/list-routes';
 import { NotFoundError } from './utils/errors';
 import cookieParser from 'cookie-parser';
+import cors from 'cors'
 
 logger.info('Application is starting...');
 
@@ -14,6 +15,10 @@ const app = express();
 logger.info('Setting up middlewares...');
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:5173',
+}))
 
 app.use(gateway);
 
@@ -25,10 +30,9 @@ app.use(errorHandler);
 
 app.listen(ENV.PORT, () => {
   logger.verbose(
-    `ENV is pointing to ${
-      ENV.NODE_ENV !== 'production'
-        ? JSON.stringify(ENV, undefined, 2)
-        : ENV.NODE_ENV
+    `ENV is pointing to ${ENV.NODE_ENV !== 'production'
+      ? JSON.stringify(ENV, undefined, 2)
+      : ENV.NODE_ENV
     }`,
   );
 
