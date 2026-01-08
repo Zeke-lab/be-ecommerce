@@ -16,6 +16,16 @@ const loginUserSchema = z.object({
   rememberMe: z.boolean().optional().default(true),
 });
 
+const auth =  (req: Request, res: Response, next: NextFunction) => {
+  try {
+    logger.info('Authenticating user:', req);
+    const response =  userService.auth(req.user)
+    return res.status(200).json(response);
+  } catch (error) {
+    return next(error);
+  }
+}
+
 const registerUser = async (
   req: Request,
   res: Response,
@@ -65,7 +75,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
       secure: true,
     });
 
-    return res.status(200).json({ userInfo });
+    return res.status(200).json({ ...userInfo });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return next(new ValidationError(error.issues));
@@ -75,4 +85,4 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { registerUser, loginUser };
+export { registerUser, loginUser, auth };

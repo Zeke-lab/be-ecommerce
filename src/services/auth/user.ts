@@ -13,7 +13,22 @@ interface UserInfo {
   id: number;
   email: string;
   name: string;
+  role: string;
   createdAt: Date;
+}
+
+const auth = (user: Express.Request['user']) => {
+  if (!user) {
+    throw new AuthenticationError('User not authenticated');
+  }
+  const userInfo: UserInfo = {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+    createdAt: user.createdAt,
+  };
+  return userInfo;
 }
 
 const registerUser = async (email: string, name: string, password: string) => {
@@ -66,8 +81,8 @@ const login = async (email: string, password: string, rememberMe: boolean) => {
     // 3. check rememberMe for refreshToken logic
     const refreshToken = rememberMe
       ? jwt.sign({ userId: result.id }, ENV.REFRESH_TOKEN_SECRET, {
-          expiresIn: '30d',
-        })
+        expiresIn: '30d',
+      })
       : undefined;
 
     // 4. generate accessToken
@@ -81,6 +96,7 @@ const login = async (email: string, password: string, rememberMe: boolean) => {
       id: result.id,
       email: result.email,
       name: result.name,
+      role: result.role,
       createdAt: result.createdAt,
     };
 
@@ -95,4 +111,4 @@ const login = async (email: string, password: string, rememberMe: boolean) => {
   }
 };
 
-export { registerUser, login };
+export { registerUser, login, auth };
