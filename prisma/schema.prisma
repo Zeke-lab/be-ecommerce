@@ -37,7 +37,7 @@ model User {
 }
 
 model Category {
-  it          Int       @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
   description String?
   products    Product[]
@@ -55,8 +55,8 @@ model Product {
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
-  category   Category? @relation(fields: [categoryIt], references: [it])
-  categoryIt Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
 }
 
 model Order {

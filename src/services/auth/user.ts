@@ -29,7 +29,7 @@ const auth = (user: Express.Request['user']) => {
     createdAt: user.createdAt,
   };
   return userInfo;
-}
+};
 
 const registerUser = async (email: string, name: string, password: string) => {
   try {
@@ -81,8 +81,8 @@ const login = async (email: string, password: string, rememberMe: boolean) => {
     // 3. check rememberMe for refreshToken logic
     const refreshToken = rememberMe
       ? jwt.sign({ userId: result.id }, ENV.REFRESH_TOKEN_SECRET, {
-        expiresIn: '30d',
-      })
+          expiresIn: '30d',
+        })
       : undefined;
 
     // 4. generate accessToken

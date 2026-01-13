@@ -16,15 +16,15 @@ const loginUserSchema = z.object({
   rememberMe: z.boolean().optional().default(true),
 });
 
-const auth =  (req: Request, res: Response, next: NextFunction) => {
+const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
     logger.info('Authenticating user:', req);
-    const response =  userService.auth(req.user)
+    const response = userService.auth(req.user);
     return res.status(200).json(response);
   } catch (error) {
     return next(error);
   }
-}
+};
 
 const registerUser = async (
   req: Request,
