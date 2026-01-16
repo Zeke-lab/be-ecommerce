@@ -78,4 +78,22 @@ const deleteCategory = async (id: number) => {
   }
 };
 
-export { createCategory, getCategories, updateCategory, deleteCategory };
+const getCategoryById = async (id: number) => {
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id: id }
+    })
+
+    if (!category) {
+      throw new NotFoundError('Category not found');
+    }
+
+    return category;
+
+  } catch (error) {
+    logger.error('Error fetching category by id: ', error);
+    throw error;
+  }
+}
+
+export { createCategory, getCategories, updateCategory, deleteCategory, getCategoryById };

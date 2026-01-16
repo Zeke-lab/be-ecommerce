@@ -84,4 +84,15 @@ const deleteCategory = async (
   }
 };
 
-export { createCategory, getCategories, updateCategory, deleteCategory };
+const getCategoryById = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const category = await categoryService.getCategoryById(+id)
+    return res.status(200).json(category)
+  } catch (error) {
+    return next(error);
+  }
+
+}
+
+export { createCategory, getCategories, updateCategory, deleteCategory, getCategoryById };
