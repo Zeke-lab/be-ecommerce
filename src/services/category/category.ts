@@ -97,3 +97,5 @@ const getCategoryById = async (id: number) => {
 }
 
 export { createCategory, getCategories, updateCategory, deleteCategory, getCategoryById };
+//testing
+console.log('Category service loaded');
