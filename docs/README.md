@@ -31,6 +31,10 @@
 - **Auth**: JWT (stored in httpOnly cookie or localStorage)
 - **Frontend**: React (with React Router + Context or Zustand for cart/auth)
 
+## Local setup
+
+- Create a `.env` file in `be-ecommerce/` and set `DATABASE_URL`. See `docs/ENV.md`.
+
 # Key Design Notes
 
 - **User → Order**: One user has many orders.

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import logger from './logger';
 import { ENV } from './env';
