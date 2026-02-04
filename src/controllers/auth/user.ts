@@ -5,13 +5,13 @@ import * as userService from '../../services/auth/user';
 import logger from '../../logger';
 
 const registerUserSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   name: z.string().min(2),
   password: z.string().min(6),
 });
 
 const loginUserSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(6),
   rememberMe: z.boolean().optional().default(true),
 });
