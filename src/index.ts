@@ -22,7 +22,9 @@ app.use(
   }),
 );
 
-app.use(gateway);
+// Allow both legacy root paths (e.g. /auth) and documented /api prefix
+app.use('/api', gateway);
+app.use('/', gateway);
 
 app.use((_req, _res, next) => {
   return next(new NotFoundError('Route not found'));
