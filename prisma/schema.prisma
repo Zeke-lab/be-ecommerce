@@ -47,10 +47,12 @@ model Category {
 
 model Product {
   id          Int         @id @default(autoincrement())
+  code        String?     @unique
   name        String
   description String?
   price       Decimal     @db.Decimal(10, 2)
   imageUrl    String?
+  qty         Int         @default(0)
   orderItems  OrderItem[]
 
   createdAt  DateTime  @default(now())
